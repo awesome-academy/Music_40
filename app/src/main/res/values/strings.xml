@@ -3,4 +3,18 @@
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
     <string name="title_download">Download</string>
+    <string name="title_genres">Genres</string>
+    <string name="String_genres_name">Genres name</string>
+    <string name="genres_all_audio">All Audio</string>
+    <string name="genres_all_music">All Music</string>
+    <string name="genres_alternative_rock">Alternative Rock</string>
+    <string name="genres_ambient">Ambient</string>
+    <string name="genres_classical">Classical</string>
+    <string name="genres_country">Country</string>
+    <string name="image_alternative_rock">alternative_rock</string>
+    <string name="image_all_music">all_music</string>
+    <string name="image_all_audio">all_audio</string>
+    <string name="image_ambient">ambient</string>
+    <string name="image_classical">classical</string>
+    <string name="image_country">country</string>
 </resources>
