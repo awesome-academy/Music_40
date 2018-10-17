@@ -6,6 +6,7 @@
     <string name="title_genres">Genres</string>
     <string name="String_genres_name">Genres name</string>
     <string name="genres_all_audio">All Audio</string>
+    <string name="genres_audio">Audio</string>
     <string name="genres_all_music">All Music</string>
     <string name="genres_alternative_rock">Alternative Rock</string>
     <string name="genres_ambient">Ambient</string>

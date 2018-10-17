@@ -3,7 +3,7 @@ package com.framgia.music_40.data.source.remote.fetchjson;
 import android.net.Uri;
 import android.os.AsyncTask;
 import com.framgia.music_40.BuildConfig;
-import com.framgia.music_40.Constant;
+import com.framgia.music_40.utils.Constant;
 import com.framgia.music_40.data.model.Music;
 import com.framgia.music_40.data.source.DataCallBack;
 import java.io.BufferedReader;
@@ -65,11 +65,11 @@ public class GetMusicDataJson extends AsyncTask<String, Void, String> {
         try {
             JSONObject collection = new JSONObject(a);
             JSONArray jsonArray = collection.getJSONArray(COLLECTION);
-            for (int i = 0; i <= jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject itemCollection = jsonArray.getJSONObject(i);
                 Music music = new Music.MusicBuilder().musicId(
                         itemCollection.getInt(Music.MusicEntry.MUSIC_ID))
-                        .musicName(Music.MusicEntry.MUSIC_TITLE)
+                        .musicName(itemCollection.getString(Music.MusicEntry.MUSIC_TITLE))
                         .path(itemCollection.getString(Music.MusicEntry.MUSIC_STREAM_URL)
                                 + Constant.CLIENT
                                 + BuildConfig.API_KEY)

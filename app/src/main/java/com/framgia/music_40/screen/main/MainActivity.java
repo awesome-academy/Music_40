@@ -5,14 +5,16 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import com.framgia.music_40.R;
-import com.framgia.music_40.screen.main.homeScreen.HomeScreen;
+import com.framgia.music_40.data.source.MusicRepository;
+import com.framgia.music_40.data.model.Music;
+import com.framgia.music_40.data.source.remote.MusicRemoteDataSource;
+import com.framgia.music_40.screen.home.ListGenresFragment;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity
 
         initView();
 
-        loadFragment(HomeScreen.newInstance());
+        loadFragment(ListGenresFragment.newInstance());
     }
 
     private void initView() {
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity
         switch (menuItem.getItemId()) {
             case R.id.screen_home:
                 mToolbar.setVisibility(View.GONE);
-                loadFragment(HomeScreen.newInstance());
+                loadFragment(ListGenresFragment.newInstance());
                 return true;
             case R.id.screen_search:
                 mToolbar.setVisibility(View.VISIBLE);
