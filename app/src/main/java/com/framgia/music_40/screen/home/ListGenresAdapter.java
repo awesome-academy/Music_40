@@ -1,4 +1,4 @@
-package com.framgia.music_40.screen.main.homeScreen;
+package com.framgia.music_40.screen.home;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,14 +12,16 @@ import com.framgia.music_40.R;
 import com.framgia.music_40.data.model.Genres;
 import java.util.List;
 
-public class HomeScreenAdapter extends RecyclerView.Adapter<HomeScreenAdapter.ViewHolder> {
+public class ListGenresAdapter extends RecyclerView.Adapter<ListGenresAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Genres> mGenresList;
+    private OnItemListGenresClick mListener;
 
-    HomeScreenAdapter(Context context, List<Genres> genresList) {
+    ListGenresAdapter(Context context, List<Genres> genresList, OnItemListGenresClick listener) {
         mContext = context;
         mGenresList = genresList;
+        mListener = listener;
     }
 
     @NonNull
@@ -27,7 +29,7 @@ public class HomeScreenAdapter extends RecyclerView.Adapter<HomeScreenAdapter.Vi
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.adapter_item_home_screen, viewGroup, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mListener);
     }
 
     @Override
@@ -40,23 +42,33 @@ public class HomeScreenAdapter extends RecyclerView.Adapter<HomeScreenAdapter.Vi
         return mGenresList != null ? mGenresList.size() : 0;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private static final String DRAWABLE = "drawable";
 
         private TextView mTextView;
         private ImageView mImageView;
+        private OnItemListGenresClick mListener;
 
-        ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView, OnItemListGenresClick listener) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.image_cover);
             mTextView = itemView.findViewById(R.id.text_view);
+            mListener = listener;
+            itemView.setOnClickListener(this);
         }
 
         void BindData(Genres genres) {
             mTextView.setText(genres.getGenreName());
             mImageView.setImageResource(mContext.getResources()
                     .getIdentifier(genres.getGenreImage(), DRAWABLE, mContext.getPackageName()));
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mListener != null) {
+                mListener.onClick(getAdapterPosition());
+            }
         }
     }
 }

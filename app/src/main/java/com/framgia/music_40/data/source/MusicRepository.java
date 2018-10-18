@@ -1,6 +1,4 @@
-package com.framgia.music_40.data;
-
-import com.framgia.music_40.data.source.DataCallBack;
+package com.framgia.music_40.data.source;
 
 public class MusicRepository {
 
@@ -18,7 +16,8 @@ public class MusicRepository {
         return mInstance;
     }
 
-    public void getDataFromUrl(DataCallBack.MusicRemoteDataSource musicRemoteDataSource, String url) {
-        mRemoteDataSource.getData(musicRemoteDataSource, url);
+    public void getDataFromUrl(DataCallBack.MusicRemoteDataSource musicRemoteDataSource,
+            String genre) {
+        mRemoteDataSource.getData(musicRemoteDataSource, genre);
     }
 }
