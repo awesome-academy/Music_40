@@ -3,9 +3,9 @@ package com.framgia.music_40.data.model;
 public class Genres {
 
     private String mGenreName;
-    private String mGenreImage;
+    private int mGenreImage;
 
-    public Genres(String genreName, String genreImage) {
+    public Genres(String genreName, int genreImage) {
         mGenreName = genreName;
         mGenreImage = genreImage;
     }
@@ -18,11 +18,11 @@ public class Genres {
         mGenreName = genreName;
     }
 
-    public String getGenreImage() {
+    public int getGenreImage() {
         return mGenreImage;
     }
 
-    public void setGenreImage(String genreImage) {
+    public void setGenreImage(int genreImage) {
         mGenreImage = genreImage;
     }
 }

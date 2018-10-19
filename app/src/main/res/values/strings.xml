@@ -18,4 +18,5 @@
     <string name="image_ambient">ambient</string>
     <string name="image_classical">classical</string>
     <string name="image_country">country</string>
+    <string name="title">Title</string>
 </resources>

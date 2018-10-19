@@ -13,15 +13,19 @@ import com.framgia.music_40.data.model.Genres;
 import com.framgia.music_40.data.model.Music;
 import com.framgia.music_40.data.source.MusicRepository;
 import com.framgia.music_40.data.source.remote.MusicRemoteDataSource;
+import com.framgia.music_40.screen.listmusic.ListMusicFragment;
 import com.framgia.music_40.utils.GenresId;
+import com.framgia.music_40.utils.Navigator;
+import com.framgia.music_40.utils.OnItemRecyclerViewClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListGenresFragment extends Fragment
-        implements ListGenresContract.View, OnItemListGenresClick {
+        implements ListGenresContract.View, OnItemRecyclerViewClickListener {
 
     private ListGenresContract.Presenter mListGenresPresenter;
     private List<Music> mMusicList;
+    private Navigator mNavigator;
 
     public static ListGenresFragment newInstance() {
         return new ListGenresFragment();
@@ -31,31 +35,35 @@ public class ListGenresFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_home_screen);
-        recyclerView.setAdapter(new ListGenresAdapter(getContext(), getGenresList(), this));
+        initView(view);
         initPresenter();
         return view;
     }
 
+    private void initView(View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_home_screen);
+        recyclerView.setAdapter(new ListGenresAdapter(getContext(), getGenresList(), this));
+        mNavigator = new Navigator();
+    }
+
     private List<Genres> getGenresList() {
         List<Genres> list = new ArrayList<>();
-        list.add(new Genres(getString(R.string.genres_all_music),
-                getString(R.string.image_all_music)));
-        list.add(new Genres(getString(R.string.genres_all_audio),
-                getString(R.string.image_all_audio)));
+        list.add(new Genres(getString(R.string.genres_all_music), R.drawable.all_music));
+        list.add(new Genres(getString(R.string.genres_all_audio), R.drawable.all_audio));
         list.add(new Genres(getString(R.string.genres_alternative_rock),
-                getString(R.string.image_alternative_rock)));
-        list.add(new Genres(getString(R.string.genres_classical),
-                getString(R.string.image_classical)));
-        list.add(new Genres(getString(R.string.genres_ambient), getString(R.string.image_ambient)));
-        list.add(new Genres(getString(R.string.genres_country), getString(R.string.image_country)));
+                R.drawable.alternative_rock));
+        list.add(new Genres(getString(R.string.genres_classical), R.drawable.classical));
+        list.add(new Genres(getString(R.string.genres_ambient), R.drawable.ambient));
+        list.add(new Genres(getString(R.string.genres_country), R.drawable.country));
         return list;
     }
 
     @Override
     public void onSuccess(List<Music> musicList) {
-        if (musicList != null) {
+        if (musicList != null && getActivity() != null) {
             mMusicList = musicList;
+            mNavigator.loadFragment(getActivity(), ListMusicFragment.newInstance(mMusicList),
+                    R.id.frame_container);
         }
     }
 
@@ -65,7 +73,7 @@ public class ListGenresFragment extends Fragment
     }
 
     @Override
-    public void onClick(int position) {
+    public void onItemClickListener(int position) {
         switch (position) {
             case GenresId.GENRE_ALL_MUSIC:
                 mListGenresPresenter.getListSongByGenres(getString(R.string.genres_all_music));

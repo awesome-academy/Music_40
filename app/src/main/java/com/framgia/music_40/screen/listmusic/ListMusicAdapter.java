@@ -1,4 +1,4 @@
-package com.framgia.music_40.screen.home;
+package com.framgia.music_40.screen.listmusic;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,61 +11,69 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.framgia.music_40.R;
-import com.framgia.music_40.data.model.Genres;
+import com.framgia.music_40.data.model.Music;
 import com.framgia.music_40.utils.OnItemRecyclerViewClickListener;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ListGenresAdapter extends RecyclerView.Adapter<ListGenresAdapter.ViewHolder> {
+public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Genres> mGenresList;
+    private List<Music> mMusicList;
     private OnItemRecyclerViewClickListener mListener;
 
-    ListGenresAdapter(Context context, List<Genres> genresList,
-            OnItemRecyclerViewClickListener listener) {
+    ListMusicAdapter(Context context, OnItemRecyclerViewClickListener listener) {
         mContext = context;
-        mGenresList = genresList;
+        mMusicList = new ArrayList<>();
         mListener = listener;
+    }
+
+    void updateListMusic(List<Music> musicList) {
+        if (musicList != null) {
+            mMusicList.clear();
+            mMusicList.addAll(musicList);
+            notifyDataSetChanged();
+        }
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.adapter_item_home_screen, viewGroup, false);
+                .inflate(R.layout.adapter_music_list_screen, viewGroup, false);
         return new ViewHolder(view, mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.BindData(mGenresList.get(i));
+        viewHolder.BindData(mMusicList.get(i));
     }
 
     @Override
     public int getItemCount() {
-        return mGenresList != null ? mGenresList.size() : 0;
+        return mMusicList != null ? mMusicList.size() : 0;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mGenresName;
-        private ImageView mGenresImage;
+        private TextView mMusicTitle;
+        private ImageView mMusicImage;
         private OnItemRecyclerViewClickListener mListener;
 
         ViewHolder(@NonNull View itemView, OnItemRecyclerViewClickListener listener) {
             super(itemView);
-            mGenresImage = itemView.findViewById(R.id.image_cover);
-            mGenresName = itemView.findViewById(R.id.text_view);
+            mMusicImage = itemView.findViewById(R.id.image_music);
+            mMusicTitle = itemView.findViewById(R.id.text_view_title);
             mListener = listener;
             itemView.setOnClickListener(this);
         }
 
-        void BindData(Genres genres) {
-            mGenresName.setText(genres.getGenreName());
+        void BindData(Music music) {
+            mMusicTitle.setText(music.getMusicName());
             Glide.with(mContext)
-                    .load(genres.getGenreImage())
+                    .load(music.getImage())
                     .apply(new RequestOptions().placeholder(R.drawable.no_image))
-                    .into(mGenresImage);
+                    .into(mMusicImage);
         }
 
         @Override
