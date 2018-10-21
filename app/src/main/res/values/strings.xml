@@ -19,4 +19,6 @@
     <string name="image_classical">classical</string>
     <string name="image_country">country</string>
     <string name="title">Title</string>
+    <string name="text_current">current</string>
+    <string name="text_duration">duration</string>
 </resources>

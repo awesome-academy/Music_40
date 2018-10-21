@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    android:clickable="true"
+    tools:ignore="RtlCompat,KeyboardInaccessibleWidget"
+    >
+
+    <ImageView
+        android:id="@+id/image_music_artwork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/seek_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/no_image"
+        />
+
+    <ImageView
+        android:id="@+id/image_back"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
+        android:layout_margin="@dimen/dp_10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+        />
+
+    <TextView
+        android:id="@+id/text_music_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/title"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toBottomOf="@id/image_back"
+        app:layout_constraintEnd_toStartOf="@+id/image_download"
+        app:layout_constraintStart_toEndOf="@id/image_back"
+        app:layout_constraintTop_toTopOf="@id/image_back"
+        />
+
+    <ImageView
+        android:id="@+id/image_download"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_margin="@dimen/dp_10"
+        app:layout_constraintBottom_toBottomOf="@id/image_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/image_back"
+        app:srcCompat="@drawable/ic_file_download_black_24dp"
+        />
+
+    <TextView
+        android:id="@+id/text_current"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:text="@string/text_current"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/seek_bar"
+        />
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/image_play"
+        app:layout_constraintEnd_toStartOf="@id/text_duration"
+        app:layout_constraintStart_toEndOf="@id/text_current"
+        app:layout_constraintTop_toBottomOf="@id/image_music_artwork"
+        />
+
+    <TextView
+        android:id="@+id/text_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:text="@string/text_duration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/seek_bar"
+        />
+
+    <ImageView
+        android:id="@+id/image_repeat"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        app:layout_constraintBottom_toBottomOf="@+id/image_previous"
+        app:layout_constraintEnd_toStartOf="@id/image_previous"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/image_play"
+        app:srcCompat="@drawable/ic_repeat_black_24dp"
+        />
+
+    <ImageView
+        android:id="@+id/image_previous"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
+        app:layout_constraintBottom_toBottomOf="@id/image_play"
+        app:layout_constraintEnd_toStartOf="@id/image_play"
+        app:layout_constraintStart_toEndOf="@id/image_repeat"
+        app:srcCompat="@drawable/ic_skip_previous_black_24dp"
+        />
+
+    <ImageView
+        android:id="@+id/image_play"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/image_next"
+        app:layout_constraintStart_toEndOf="@id/image_previous"
+        app:layout_constraintTop_toBottomOf="@+id/seek_bar"
+        app:srcCompat="@drawable/ic_play_arrow_black_24dp"
+        />
+
+    <ImageView
+        android:id="@+id/image_next"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
+        app:layout_constraintBottom_toBottomOf="@id/image_play"
+        app:layout_constraintEnd_toStartOf="@id/image_shuffler"
+        app:layout_constraintStart_toEndOf="@id/image_play"
+        app:layout_constraintTop_toTopOf="@id/image_previous"
+        app:srcCompat="@drawable/ic_skip_next_black_24dp"
+        />
+
+    <ImageView
+        android:id="@+id/image_shuffler"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        app:layout_constraintBottom_toBottomOf="@+id/image_play"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/image_next"
+        app:layout_constraintTop_toTopOf="@+id/image_play"
+        app:srcCompat="@drawable/ic_shuffle_black_24dp"
+        />
+</android.support.constraint.ConstraintLayout>
