@@ -1,5 +1,7 @@
 package com.framgia.music_40.screen.listmusic;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -10,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.framgia.music_40.R;
 import com.framgia.music_40.data.model.Music;
+import com.framgia.music_40.screen.controller.ControllerFragment;
+import com.framgia.music_40.screen.controller.service.ServicePlayMusic;
+import com.framgia.music_40.utils.Navigator;
 import com.framgia.music_40.utils.OnItemRecyclerViewClickListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +24,16 @@ public class ListMusicFragment extends Fragment implements OnItemRecyclerViewCli
     private static final String ARGUMENT_LIST_MUSIC = "ARGUMENT_LIST_MUSIC";
 
     private ListMusicAdapter mListMusicAdapter;
+    private Navigator mNavigator;
+    private List<Music> mMusicList;
+
+    private Intent getServicePlayMusic(Context context, int position) {
+        Intent intent = new Intent(context, ServicePlayMusic.class);
+        intent.putExtra(ServicePlayMusic.EXTRA_POSITION, position);
+        intent.putParcelableArrayListExtra(ServicePlayMusic.EXTRA_LIST_MUSIC,
+                (ArrayList<? extends Parcelable>) mMusicList);
+        return intent;
+    }
 
     public static ListMusicFragment newInstance(List<Music> musicList) {
         ListMusicFragment listMusicFragmentScreen = new ListMusicFragment();
@@ -42,17 +57,23 @@ public class ListMusicFragment extends Fragment implements OnItemRecyclerViewCli
         RecyclerView recyclerView = view.findViewById(R.id.recycler_music_list_screen);
         mListMusicAdapter = new ListMusicAdapter(getContext(), this);
         recyclerView.setAdapter(mListMusicAdapter);
+        mNavigator = new Navigator();
     }
 
     private void initData() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            List<Music> musicList = bundle.getParcelableArrayList(ARGUMENT_LIST_MUSIC);
-            mListMusicAdapter.updateListMusic(musicList);
+            mMusicList = bundle.getParcelableArrayList(ARGUMENT_LIST_MUSIC);
+            mListMusicAdapter.updateListMusic(mMusicList);
         }
     }
 
     @Override
     public void onItemClickListener(int position) {
+        if (getActivity() != null) {
+            getActivity().startService(getServicePlayMusic(getActivity(), position));
+            mNavigator.loadFragment(getActivity(),
+                    ControllerFragment.newInstance(mMusicList, position), R.id.frame_container);
+        }
     }
 }
