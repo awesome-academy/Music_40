@@ -12,7 +12,7 @@ public class Navigator {
         switch (layoutId) {
             case R.id.frame_container_screen:
                 transaction.replace(layoutId, fragment);
-                transaction.commit();
+                transaction.commitAllowingStateLoss();
                 break;
             case R.id.frame_container:
                 transaction.add(layoutId, fragment);
