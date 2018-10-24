@@ -9,4 +9,5 @@ public final class Constant {
     public static final int MINUS_ONE = -1;
     public static final int ONE = 1;
     public static final int ZERO = 0;
+    public static final String MUSIC_FORMAT_MP3 = ".mp3";
 }

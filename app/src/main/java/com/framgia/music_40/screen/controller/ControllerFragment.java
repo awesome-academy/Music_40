@@ -17,7 +17,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.framgia.music_40.R;
 import com.framgia.music_40.data.model.Music;
 import com.framgia.music_40.screen.controller.service.ServicePlayMusicManager;
-import com.framgia.music_40.utils.Constant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class ControllerFragment extends Fragment
     private TextView mCurrent, mDuration, mMusicTitle;
     private ServicePlayMusicManager mServicePlayMusicManager;
     private boolean mIsRepeat;
-    private int mCountRepeat;
+    private boolean mIsShuffler;
 
     public static ControllerFragment newInstance(List<Music> musicList, int position) {
         ControllerFragment controllerFragment = new ControllerFragment();
@@ -106,6 +105,7 @@ public class ControllerFragment extends Fragment
                 getActivity().getSupportFragmentManager().popBackStack();
                 break;
             case R.id.image_download:
+                mServicePlayMusicManager.downLoadMusic();
                 break;
             case R.id.image_previous:
                 previousMusic();
@@ -118,21 +118,23 @@ public class ControllerFragment extends Fragment
                 break;
             case R.id.image_repeat:
                 mIsRepeat = !mIsRepeat;
-                mCountRepeat = Constant.ZERO;
                 break;
             case R.id.image_shuffler:
+                mIsShuffler = !mIsShuffler;
                 break;
         }
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        if (mIsRepeat && mCountRepeat != Constant.ONE) {
-            mCountRepeat++;
+        if (mIsRepeat) {
             mServicePlayMusicManager.repeatMusic();
         } else {
-            nextMusic();
-            mCountRepeat = Constant.ZERO;
+            if (mIsShuffler) {
+                shufflerMusic();
+            } else {
+                nextMusic();
+            }
         }
     }
 
@@ -154,5 +156,10 @@ public class ControllerFragment extends Fragment
             mPlayButton.setImageResource(R.drawable.ic_pause_black_24dp);
             mServicePlayMusicManager.resetMusic();
         }
+    }
+
+    private void shufflerMusic() {
+        mPosition = mServicePlayMusicManager.shufflerMusic();
+        initData();
     }
 }

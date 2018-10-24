@@ -1,20 +1,26 @@
 package com.framgia.music_40.screen.controller.service;
 
+import android.app.DownloadManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Binder;
+import android.os.Environment;
 import android.os.IBinder;
 import com.framgia.music_40.data.model.Music;
 import com.framgia.music_40.utils.Constant;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class ServicePlayMusic extends Service {
 
     public static final String EXTRA_LIST_MUSIC = "EXTRA_LIST_MUSIC";
     public static final String EXTRA_POSITION = "EXTRA_POSITION";
+    private static final String STATUS_DOWNLOAD = "DownLoading";
 
     private IBinder mIBinder;
     private MediaPlayer mMediaPlayer;
@@ -91,6 +97,12 @@ public class ServicePlayMusic extends Service {
         mMediaPlayer.start();
     }
 
+    public int shufflerMusic() {
+        mPosition = new Random().nextInt(mMusicList.size() - Constant.ONE);
+        musicPlay();
+        return mPosition;
+    }
+
     private void startMediaPlayer() {
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
@@ -107,5 +119,22 @@ public class ServicePlayMusic extends Service {
             mMediaPlayer.stop();
         }
         mMediaPlayer.reset();
+    }
+
+    public void onDownloadMusic() {
+        DownloadManager downloadmanager =
+                (DownloadManager) getApplicationContext().getSystemService(
+                        Context.DOWNLOAD_SERVICE);
+        if (downloadmanager != null) {
+            Uri uri = Uri.parse(mMusicList.get(mPosition).getPath());
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setTitle(mMusicList.get(mPosition).getMusicName());
+            request.setDescription(STATUS_DOWNLOAD);
+            request.setNotificationVisibility(
+                    DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC,
+                    mMusicList.get(mPosition).getMusicName() + Constant.MUSIC_FORMAT_MP3);
+            downloadmanager.enqueue(request);
+        }
     }
 }

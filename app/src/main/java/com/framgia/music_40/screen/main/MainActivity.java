@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.screen_download:
                 mToolbar.setVisibility(View.VISIBLE);
                 mToolbar.setTitle(R.string.title_download);
-                mMainPresenter.getListSongLocal(this);
+                mMainPresenter.getListSongLocal();
                 return true;
         }
         return false;

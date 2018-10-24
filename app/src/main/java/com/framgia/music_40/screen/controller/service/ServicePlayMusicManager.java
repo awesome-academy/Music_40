@@ -71,6 +71,10 @@ public class ServicePlayMusicManager {
         mServicePlayMusic.musicPlay();
     }
 
+    public int shufflerMusic() {
+        return mServicePlayMusic.shufflerMusic();
+    }
+
     public boolean isPlaying() {
         return mMediaPlayer.isPlaying();
     }
@@ -123,5 +127,9 @@ public class ServicePlayMusicManager {
                 TimeUnit.MILLISECONDS.toMinutes(duration),
                 TimeUnit.MILLISECONDS.toSeconds(duration) - TimeUnit.MINUTES.toSeconds(
                         TimeUnit.MILLISECONDS.toMinutes(duration)));
+    }
+
+    public void downLoadMusic() {
+        mServicePlayMusic.onDownloadMusic();
     }
 }
