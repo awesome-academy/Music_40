@@ -12,6 +12,7 @@ import com.framgia.music_40.R;
 import com.framgia.music_40.data.model.Genres;
 import com.framgia.music_40.data.model.Music;
 import com.framgia.music_40.data.source.MusicRepository;
+import com.framgia.music_40.data.source.local.MusicLocalDataSource;
 import com.framgia.music_40.data.source.remote.MusicRemoteDataSource;
 import com.framgia.music_40.screen.listmusic.ListMusicFragment;
 import com.framgia.music_40.utils.GenresId;
@@ -99,7 +100,10 @@ public class ListGenresFragment extends Fragment
 
     private void initPresenter() {
         MusicRemoteDataSource musicRemoteDataSource = MusicRemoteDataSource.getInstance();
-        MusicRepository musicRepository = MusicRepository.getInstance(musicRemoteDataSource);
+        MusicLocalDataSource musicLocalDataSource =
+                MusicLocalDataSource.getInstance(getActivity().getContentResolver());
+        MusicRepository musicRepository =
+                MusicRepository.getInstance(musicRemoteDataSource, musicLocalDataSource);
         mListGenresPresenter = new ListGenresPresenter(musicRepository);
         mListGenresPresenter.setView(this);
     }
