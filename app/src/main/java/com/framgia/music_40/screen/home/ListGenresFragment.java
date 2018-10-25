@@ -15,6 +15,7 @@ import com.framgia.music_40.data.source.MusicRepository;
 import com.framgia.music_40.data.source.local.MusicLocalDataSource;
 import com.framgia.music_40.data.source.remote.MusicRemoteDataSource;
 import com.framgia.music_40.screen.listmusic.ListMusicFragment;
+import com.framgia.music_40.screen.main.MainActivity;
 import com.framgia.music_40.utils.GenresId;
 import com.framgia.music_40.utils.Navigator;
 import com.framgia.music_40.utils.OnItemRecyclerViewClickListener;
@@ -75,26 +76,28 @@ public class ListGenresFragment extends Fragment
 
     @Override
     public void onItemClickListener(int position) {
-        switch (position) {
-            case GenresId.GENRE_ALL_MUSIC:
-                mListGenresPresenter.getListSongByGenres(getString(R.string.genres_all_music));
-                break;
-            case GenresId.GENRE_ALL_AUDIO:
-                mListGenresPresenter.getListSongByGenres(getString(R.string.genres_audio));
-                break;
-            case GenresId.GENRE_ALTERNATIVE_ROCK:
-                mListGenresPresenter.getListSongByGenres(
-                        getString(R.string.genres_alternative_rock));
-                break;
-            case GenresId.GENRE_CLASSICAL:
-                mListGenresPresenter.getListSongByGenres(getString(R.string.genres_classical));
-                break;
-            case GenresId.GENRE_AMBIENT:
-                mListGenresPresenter.getListSongByGenres(getString(R.string.genres_ambient));
-                break;
-            case GenresId.GENRE_COUNTRY:
-                mListGenresPresenter.getListSongByGenres(getString(R.string.genres_country));
-                break;
+        if (MainActivity.mIsConnected) {
+            switch (position) {
+                case GenresId.GENRE_ALL_MUSIC:
+                    mListGenresPresenter.getListSongByGenres(getString(R.string.genres_all_music));
+                    break;
+                case GenresId.GENRE_ALL_AUDIO:
+                    mListGenresPresenter.getListSongByGenres(getString(R.string.genres_audio));
+                    break;
+                case GenresId.GENRE_ALTERNATIVE_ROCK:
+                    mListGenresPresenter.getListSongByGenres(
+                            getString(R.string.genres_alternative_rock));
+                    break;
+                case GenresId.GENRE_CLASSICAL:
+                    mListGenresPresenter.getListSongByGenres(getString(R.string.genres_classical));
+                    break;
+                case GenresId.GENRE_AMBIENT:
+                    mListGenresPresenter.getListSongByGenres(getString(R.string.genres_ambient));
+                    break;
+                case GenresId.GENRE_COUNTRY:
+                    mListGenresPresenter.getListSongByGenres(getString(R.string.genres_country));
+                    break;
+            }
         }
     }
 

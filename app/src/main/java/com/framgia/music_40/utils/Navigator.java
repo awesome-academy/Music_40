@@ -14,7 +14,13 @@ public class Navigator {
                 transaction.replace(layoutId, fragment);
                 transaction.commitAllowingStateLoss();
                 break;
+            case R.id.frame_container_collapse:
+                transaction.setCustomAnimations(R.animator.slide_up, R.animator.slide_up);
+                transaction.replace(layoutId, fragment);
+                transaction.commit();
+                break;
             case R.id.frame_container:
+                transaction.setCustomAnimations(R.animator.slide_up, R.animator.slide_up);
                 transaction.add(layoutId, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();

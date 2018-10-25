@@ -3,9 +3,9 @@ package com.framgia.music_40.data.source.remote.fetchjson;
 import android.net.Uri;
 import android.os.AsyncTask;
 import com.framgia.music_40.BuildConfig;
-import com.framgia.music_40.utils.Constant;
 import com.framgia.music_40.data.model.Music;
 import com.framgia.music_40.data.source.DataCallBack;
+import com.framgia.music_40.utils.Constant;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -20,6 +20,7 @@ public class GetMusicDataJson extends AsyncTask<String, Void, String> {
 
     private static final String METHOD_GET = "GET";
     private static final String COLLECTION = "collection";
+    private static final int RESPONSE_CODE_SUCCESS = 200;
 
     private DataCallBack.MusicRemoteDataSource mMusicRemoteDataSource;
 
@@ -49,15 +50,20 @@ public class GetMusicDataJson extends AsyncTask<String, Void, String> {
         HttpURLConnection httpURLConnection = (HttpURLConnection) url1.openConnection();
         httpURLConnection.setRequestMethod(METHOD_GET);
         httpURLConnection.connect();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(url1.openStream()));
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            stringBuilder.append(line).append("\n");
+
+        int responseCode = httpURLConnection.getResponseCode();
+        if (responseCode == RESPONSE_CODE_SUCCESS) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url1.openStream()));
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            reader.close();
+            httpURLConnection.disconnect();
+            return stringBuilder.toString();
         }
-        reader.close();
-        httpURLConnection.disconnect();
-        return stringBuilder.toString();
+        return "";
     }
 
     private List<Music> parseJsonToData(String a) {
