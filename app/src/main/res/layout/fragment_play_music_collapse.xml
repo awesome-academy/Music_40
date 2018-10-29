@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/background_light"
+    app:layout_constraintBottom_toBottomOf="parent"
+    >
+
+    <ImageView
+        android:id="@+id/image_cover_collapse"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
+        android:src="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/music_name"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/music_name"
+        android:layout_width="@dimen/dp_250"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/title"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toTopOf="@id/image_previous_collapse"
+        app:layout_constraintLeft_toRightOf="@id/image_cover_collapse"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/image_previous_collapse"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_30"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/image_play_collapse"
+        app:layout_constraintTop_toBottomOf="@id/music_name"
+        app:srcCompat="@drawable/ic_skip_previous_black_24dp"
+        />
+
+    <ImageView
+        android:id="@+id/image_play_collapse"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        app:layout_constraintLeft_toRightOf="@id/image_previous_collapse"
+        app:layout_constraintRight_toLeftOf="@id/image_next_collapse"
+        app:layout_constraintTop_toTopOf="@id/image_previous_collapse"
+        app:srcCompat="@drawable/ic_pause_black_24dp"
+        />
+
+    <ImageView
+        android:id="@+id/image_next_collapse"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_30"
+        app:layout_constraintLeft_toRightOf="@id/image_play_collapse"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/image_previous_collapse"
+        app:srcCompat="@drawable/ic_skip_next_black_24dp"
+        />
+
+</android.support.constraint.ConstraintLayout>

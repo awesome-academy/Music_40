@@ -6,17 +6,20 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.framgia.music_40.R;
 import com.framgia.music_40.data.model.Music;
 import com.framgia.music_40.screen.controller.service.ServicePlayMusicManager;
+import com.framgia.music_40.utils.Navigator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,8 @@ public class ControllerFragment extends Fragment
 
     private static final String ARGUMENT_LIST_MUSIC = "ARGUMENT_LIST_MUSIC";
     private static final String ARGUMENT_POSITION = "ARGUMENT_POSITION";
+    private static final String LOOP = "LOOP";
+    private static final String SHUFFLER = "SHUFFLER";
 
     private List<Music> mMusicList;
     private int mPosition;
@@ -32,8 +37,9 @@ public class ControllerFragment extends Fragment
     private SeekBar mControllerSeekBar;
     private TextView mCurrent, mDuration, mMusicTitle;
     private ServicePlayMusicManager mServicePlayMusicManager;
-    private boolean mIsRepeat;
-    private boolean mIsShuffler;
+    public static boolean mIsRepeat;
+    public static boolean mIsShuffler;
+    private Navigator mNavigator;
 
     public static ControllerFragment newInstance(List<Music> musicList, int position) {
         ControllerFragment controllerFragment = new ControllerFragment();
@@ -55,6 +61,7 @@ public class ControllerFragment extends Fragment
             mServicePlayMusicManager = ServicePlayMusicManager.getInstance();
             MediaPlayer mediaPlayer = mServicePlayMusicManager.getMediaPlayer();
             mediaPlayer.setOnCompletionListener(this);
+            mNavigator = new Navigator();
         }
     }
 
@@ -81,6 +88,7 @@ public class ControllerFragment extends Fragment
         view.findViewById(R.id.image_next).setOnClickListener(this);
         view.findViewById(R.id.image_repeat).setOnClickListener(this);
         view.findViewById(R.id.image_shuffler).setOnClickListener(this);
+        onBackPress(view);
     }
 
     private void initData() {
@@ -89,12 +97,16 @@ public class ControllerFragment extends Fragment
                     .load(mMusicList.get(mPosition).getImage())
                     .apply(new RequestOptions().placeholder(R.drawable.no_image).circleCrop())
                     .into(mMusicImage);
-            mPlayButton.setImageResource(R.drawable.ic_pause_black_24dp);
             mDuration.setText(mServicePlayMusicManager.parseDurationToStringTime(
                     mServicePlayMusicManager.getDuration()));
             mMusicTitle.setText(mMusicList.get(mPosition).getMusicName());
             mServicePlayMusicManager.getRunnable(mControllerSeekBar, mCurrent);
             mServicePlayMusicManager.initSeekBar(mControllerSeekBar);
+            if (!mServicePlayMusicManager.isPlaying()) {
+                mPlayButton.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+            } else {
+                mPlayButton.setImageResource(R.drawable.ic_pause_black_24dp);
+            }
         }
     }
 
@@ -103,6 +115,9 @@ public class ControllerFragment extends Fragment
         switch (v.getId()) {
             case R.id.image_back:
                 getActivity().getSupportFragmentManager().popBackStack();
+                mNavigator.loadFragment(getActivity(),
+                        ControllerCollapse.newInstance(mMusicList, mPosition),
+                        R.id.frame_container_collapse);
                 break;
             case R.id.image_download:
                 mServicePlayMusicManager.downLoadMusic();
@@ -118,9 +133,15 @@ public class ControllerFragment extends Fragment
                 break;
             case R.id.image_repeat:
                 mIsRepeat = !mIsRepeat;
+                if (mIsRepeat) {
+                    Toast.makeText(getActivity(), LOOP, Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.image_shuffler:
                 mIsShuffler = !mIsShuffler;
+                if (mIsShuffler) {
+                    Toast.makeText(getActivity(), SHUFFLER, Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
@@ -130,21 +151,25 @@ public class ControllerFragment extends Fragment
         if (mIsRepeat) {
             mServicePlayMusicManager.repeatMusic();
         } else {
-            if (mIsShuffler) {
-                shufflerMusic();
-            } else {
-                nextMusic();
-            }
+            nextMusic();
         }
     }
 
     private void nextMusic() {
-        mPosition = mServicePlayMusicManager.nextMusic();
+        if (mIsShuffler) {
+            mPosition = mServicePlayMusicManager.shufflerMusic();
+        } else {
+            mPosition = mServicePlayMusicManager.nextMusic();
+        }
         initData();
     }
 
     private void previousMusic() {
-        mPosition = mServicePlayMusicManager.previousMusic();
+        if (mIsShuffler) {
+            mPosition = mServicePlayMusicManager.shufflerMusic();
+        } else {
+            mPosition = mServicePlayMusicManager.previousMusic();
+        }
         initData();
     }
 
@@ -158,8 +183,21 @@ public class ControllerFragment extends Fragment
         }
     }
 
-    private void shufflerMusic() {
-        mPosition = mServicePlayMusicManager.shufflerMusic();
-        initData();
+    public void onBackPress(View view) {
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    mNavigator.loadFragment(getActivity(),
+                            ControllerCollapse.newInstance(mMusicList, mPosition),
+                            R.id.frame_container_collapse);
+                    getActivity().getSupportFragmentManager().popBackStack();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 }
